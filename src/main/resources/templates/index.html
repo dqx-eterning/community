@@ -6,6 +6,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.10.0/jquery.js"></script>
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/community.css">
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <body>
@@ -16,7 +17,7 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">论坛社区</span>
             </button>
-            <a class="navbar-brand" href="#">论坛社区</a>
+            <a class="navbar-brand" href="/">论坛社区</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -49,5 +50,68 @@
         </div>
     </div>
 </nav>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
+            <h4><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 发现</h4>
+            <hr>
+            <div class="media" th:each="question :${pagination.questions}">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-person img-rounded"
+                             th:src="${question.user.avatarUrl}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <span th:text="${question.description}"></span>
+                    <span class="text-desc" ><span th:text="${question.commentCount}"></span>个回复
+                    •<span th:text="${question.viewCount}"></span>次浏览
+                    •<span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
+                    <br><br>
+                </div>
+            </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li th:if="${pagination.showFirstPage}">
+                        <a th:href="@{/(page=1)}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;&lt;</span>
+                        </a>
+                    </li>
+                    <li th:if="${pagination.showPrevious}">
+                        <a th:href="@{/(page=${pagination.page - 1})}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li th:each="page :${pagination.pages}"
+                        th:class="${pagination.page == page}? 'active' : ''">
+                        <a th:href="@{/(page=${page})}" th:text="${page}"></a>
+                    </li>
+
+                    <li th:if="${pagination.showNext}">
+                        <a th:href="@{/(page=${pagination.page +1 })}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <li th:if="${pagination.showEndPage}">
+                        <a th:href="@{/(page=${pagination.totalPage})}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&gt;&gt;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>热门话题</h3>
+            <p class="bg-info"> • 问题标题: 请用精简的语言描述您发布的问题，不超过25字 </p><br>
+            <p class="bg-info"> • 问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料 </p><br>
+            <p class="bg-info">• 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字</p><br>
+        </div>
+        <div></div>
+    </div>
+</div>
 </body>
 </html>
