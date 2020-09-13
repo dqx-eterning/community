@@ -1,20 +1,21 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>论坛社区</title>
+    <title th:text="${sectionName}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.10.0/jquery.js"></script>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/community.css">
-    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
-<div class="container-fluid main">
+<div class="container-fluid main profile">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
-            <h4><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 发现</h4>
+            <h4><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                <span th:text="${sectionName}"></span></h4>
             <hr>
             <div class="media" th:each="question :${pagination.questions}">
                 <div class="media-left">
@@ -27,7 +28,6 @@
                     <h4 class="media-heading" >
                         <a th:href="@{'/question/'+ ${question.id}}" th:text="${question.title}"></a>
                     </h4>
-                    <span th:text="${question.description}"></span>
                     <span class="text-desc" ><span th:text="${question.commentCount}"></span>个回复
                     •<span th:text="${question.viewCount}"></span>次浏览
                     •<span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
@@ -37,30 +37,28 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li th:if="${pagination.showFirstPage}">
-                        <a th:href="@{/(page=1)}" aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${1})}"
+                           aria-label="Previous">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li>
                     <li th:if="${pagination.showPrevious}">
-                        <a th:href="@{/(page=${pagination.page - 1})}"
-                           aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.page - 1})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
-                    <li th:each="page :${pagination.pages}"
-                        th:class="${pagination.page == page}? 'active' : ''">
-                        <a th:href="@{/(page=${page})}" th:text="${page}"></a>
+
+                    <li th:each="page : ${pagination.pages}" th:class="${pagination.page == page}? 'active' : ''">
+                        <a th:href="@{'/profile/'+${section}(page=${page})}" th:text="${page}"></a>
                     </li>
 
                     <li th:if="${pagination.showNext}">
-                        <a th:href="@{/(page=${pagination.page +1 })}"
-                           aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.page +1})}" aria-label="Previous">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li th:if="${pagination.showEndPage}">
-                        <a th:href="@{/(page=${pagination.totalPage})}"
-                           aria-label="Previous">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.totalPage})}" aria-label="Previous">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>
@@ -68,10 +66,15 @@
             </nav>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <h3>热门话题</h3>
-            <p class="bg-info"> • 问题标题: 请用精简的语言描述您发布的问题，不超过25字 </p><br>
-            <p class="bg-info"> • 问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料 </p><br>
-            <p class="bg-info">• 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字</p><br>
+            <div class="list-group section" >
+                <a href="/profile/questions"
+                   th:class="${section == 'questions'}? 'active list-group-item' : 'list-group-item'">我的问题</a>
+                <a href="/profile/replies"
+                   th:class="${section == 'replies'}? 'active list-group-item' : 'list-group-item'">
+                    最新回复
+                    <span class="badge" th:text="${session.unreadCount}">14</span>
+                </a>
+            </div>
         </div>
         <div></div>
     </div>
