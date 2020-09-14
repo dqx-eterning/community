@@ -18,6 +18,10 @@ body {
     width: 38px;
 }
 
+.person-name{
+    padding-top: 10px;
+}
+
 .text-desc{
     font-size: 12px;
     font-weight: normal;
@@ -31,4 +35,14 @@ body {
     color: #999;
     font-size: 13px;
     margin-bottom: 15px;
+}
+.jumbotron{
+    margin: 50px;
+}
+.comment {
+    margin: 10px 0;
+}
+.btn-comment {
+    float: right;
+    margin-bottom: 10px;
 }
