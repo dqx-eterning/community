@@ -1,5 +1,6 @@
 package dqx.community.service;
 
+import dqx.community.dto.CommentDTO;
 import dqx.community.dto.PaginationDTO;
 import dqx.community.dto.QuestionDTO;
 import dqx.community.exception.CustomizeErrorCode;
@@ -152,4 +153,5 @@ public class QuestionService {
         question.setViewCount(1);
         questionExtMapper.incView(question);
     }
+
 }
