@@ -13,11 +13,13 @@ body {
     margin-bottom: 15px;
 }
 
+/*头像大小*/
 .img-person{
     height: 38px;
     width: 38px;
 }
 
+/*name 位置*/
 .person-name{
     padding-top: 10px;
 }
@@ -86,4 +88,16 @@ body {
 
 .question-title {
     margin-top: 25px;
+}
+
+
+.sub-comments {
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+.sub-comments .btn {
+    margin: 10px 0;
 }

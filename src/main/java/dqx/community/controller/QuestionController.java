@@ -1,8 +1,8 @@
 package dqx.community.controller;
 
-import dqx.community.dto.CommentCreateDTO;
 import dqx.community.dto.CommentDTO;
 import dqx.community.dto.QuestionDTO;
+import dqx.community.enums.CommentTypeEnum;
 import dqx.community.service.CommentService;
 import dqx.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class QuestionController {
 
         QuestionDTO questionDTO = questionService.getById(id);
 
-        List<CommentDTO> comments = commentService.findByQuestionId(id);
+        List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 
         //累加阅读数
         questionService.incView(id);

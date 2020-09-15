@@ -4,10 +4,7 @@ import dqx.community.dto.CommentDTO;
 import dqx.community.enums.CommentTypeEnum;
 import dqx.community.exception.CustomizeErrorCode;
 import dqx.community.exception.CustomizeException;
-import dqx.community.mapper.CommentMapper;
-import dqx.community.mapper.QuestionExtMapper;
-import dqx.community.mapper.QuestionMapper;
-import dqx.community.mapper.UserMapper;
+import dqx.community.mapper.*;
 import dqx.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,9 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CommentExtMapper commentExtMapper;
+
     @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId() == null || comment.getParentId() == 0){
@@ -51,6 +51,12 @@ public class CommentService {
             }
             commentMapper.insert(comment);
 
+            // 增加评论数
+            Comment parentComment = new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(parentComment);
+
         }else {
             // 回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -64,9 +70,9 @@ public class CommentService {
         }
     }
 
-    public List<CommentDTO> findByQuestionId(Long id) {
+    public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
-        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         if (comments.size() == 0) {
