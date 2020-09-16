@@ -6,6 +6,7 @@ import dqx.community.dto.ResultDTO;
 import dqx.community.enums.CommentTypeEnum;
 import dqx.community.exception.CustomizeErrorCode;
 import dqx.community.mapper.CommentMapper;
+import dqx.community.mapper.NotificationMapper;
 import dqx.community.model.Comment;
 import dqx.community.model.User;
 import dqx.community.service.CommentService;
@@ -26,6 +27,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+
     @ResponseBody
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     public Object post(@RequestBody CommentCreateDTO commentCreateDTO,
@@ -45,7 +47,7 @@ public class CommentController {
         comment.setGmtModified(System.currentTimeMillis());
         comment.setCommentator(user.getId());
         comment.setLikeCount(0L);
-        commentService.insert(comment);
+        commentService.insert(comment,user);
         return ResultDTO.okOf();
     }
 
