@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.min.css">
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
@@ -38,7 +40,7 @@
                            th:if="${session.user != null && session.user.id == question.creator}">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
                     </a>
-                    </span>
+                    </span><br><br>
                     </div>
                 </div>
             </div>
@@ -50,7 +52,7 @@
                             <a th:href="@{'/notification/'+ ${notification.id}}"
                                th:text="${notification.outerTitle}">
                             </a>
-                            <span class="label label-danger" th:if="${notification.status == 0}">未读</span>
+                            <span class="label label-danger" th:if="${notification.status == 0}">未读</span><br>
                         </p>
                     </div>
                 </div>
@@ -103,4 +105,5 @@
     </div>
 </div>
 </body>
+<div th:insert="~{footer :: foot}"></div>
 </html>

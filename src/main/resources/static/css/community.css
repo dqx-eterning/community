@@ -149,3 +149,13 @@ body {
     margin: 5px 5px;
     display: inline-block;
 }
+.footer {
+    text-align: center;
+    font-size: 12px;
+    color: #666;;
+    padding: 0 0 15px 0;
+}
+
+.red {
+    color: red !important;
+}

@@ -1,8 +1,9 @@
 package dqx.community.service;
 
-import dqx.community.dto.CommentDTO;
+import dqx.community.dto.QuestionQueryDTO;
 import dqx.community.dto.PaginationDTO;
 import dqx.community.dto.QuestionDTO;
+import dqx.community.enums.SortEnum;
 import dqx.community.exception.CustomizeErrorCode;
 import dqx.community.exception.CustomizeException;
 import dqx.community.mapper.QuestionExtMapper;
@@ -33,11 +34,22 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDTO findList(Integer page, Integer size) {
+    public PaginationDTO findList(String search, Integer page, Integer size) {
+
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays
+                    .stream(tags)
+                    .collect(Collectors.joining("|"));
+        }
         PaginationDTO paginationDTO = new PaginationDTO();
 
         Integer totalPage;
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount =  questionExtMapper.countBySearch(questionQueryDTO);
+
+
         if( totalCount % size == 0){
             totalPage= totalCount / size;
         }else {
@@ -52,11 +64,10 @@ public class QuestionService {
         }
         paginationDTO.setPagination(totalPage,page);
 
-        Integer offset = size*(page - 1);
-        QuestionExample example = new QuestionExample();
-        example.setOrderByClause("gmt_create desc");
-        List<Question> list = questionMapper.selectByExampleWithBLOBsWithRowbounds(example,
-                new RowBounds(offset, size));
+        Integer offset = page < 1 ? 0 : size * (page - 1);
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+        List<Question> list = questionExtMapper.selectBySearch(questionQueryDTO);
         List<QuestionDTO> questionDTOList = new ArrayList<QuestionDTO>();
 
         for (Question question : list) {
