@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by codedrinker on 2019/6/14.
- */
+
 @Controller
 public class NotificationController {
 
