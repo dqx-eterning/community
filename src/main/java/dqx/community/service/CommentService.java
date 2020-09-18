@@ -40,6 +40,7 @@ public class CommentService {
     @Autowired
     private NotificationMapper notificationMapper;
 
+    //根据传递的问题，进行回复，并根据类型判断是回复什么，同时添加事务管理功能
     @Transactional
     public void insert(Comment comment , User commentator) {
         if (comment.getParentId() == null || comment.getParentId() == 0){
@@ -100,6 +101,8 @@ public class CommentService {
         notificationMapper.insert(notification);
     }
 
+
+    //二级品论
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());

@@ -34,6 +34,7 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
+    //通过页面传递的参数，进行查询分页
     public PaginationDTO findList(String search, Integer page, Integer size) {
 
         if (StringUtils.isNotBlank(search)) {
@@ -84,6 +85,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    //我的问题页面分页展示
     public PaginationDTO findList(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
 
@@ -126,6 +128,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    //根据id查询问题。展示问题详情页面
     public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null){
@@ -138,6 +141,7 @@ public class QuestionService {
         return questionDTO;
     }
 
+    //根据判断用户是否创建者，更新或者创建问题
     public void creatOrUpdate(Question question) {
         if (question.getId() == null){
             question.setGmtCreate(System.currentTimeMillis());
@@ -163,6 +167,7 @@ public class QuestionService {
 
     }
 
+    //增加浏览数
     public void incView(Long id) {
         Question question = new Question();
         question.setId(id);
@@ -170,6 +175,7 @@ public class QuestionService {
         questionExtMapper.incView(question);
     }
 
+    //根据问题查询
     public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
         if (StringUtils.isBlank(queryDTO.getTag())) {
             return new ArrayList<>();
